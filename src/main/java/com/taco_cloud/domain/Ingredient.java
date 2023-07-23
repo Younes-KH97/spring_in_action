@@ -1,20 +1,16 @@
 package com.taco_cloud.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
-@RequiredArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@Builder
 public class Ingredient {
 
     @Id
-    private final String id;
-    private final String name;
+    private String id;
+    private String name;
     private Type type;
 
     public enum Type {
