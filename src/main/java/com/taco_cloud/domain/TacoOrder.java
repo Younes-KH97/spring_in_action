@@ -1,10 +1,14 @@
 package com.taco_cloud.domain;
 
+import com.taco_cloud.user.UserApp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.io.Serializable;
@@ -14,6 +18,9 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TacoOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,7 +66,10 @@ public class TacoOrder implements Serializable {
     @ManyToMany(targetEntity = Taco.class)
     private List<Taco> tacos = new ArrayList<>();
 
-    // Do not forgot to add user.
+    @ManyToOne
+    @JoinColumn(name = "user_app_id")
+    private UserApp userApp;
+
 
     @PrePersist
     void placedAt(){

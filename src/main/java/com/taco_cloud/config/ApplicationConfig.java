@@ -52,35 +52,4 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner(
-            IngredientRepository ingredientRepository,
-            UserRepo userRepo
-            ) {
-        return args -> {
-            ingredientRepository.saveAll(List.of(
-                            Ingredient.builder().id("FLTO").name("Flour Tortilla").type(Ingredient.Type.WRAP).build(),
-                            Ingredient.builder().id("COTO").name("Corn Tortilla").type(Ingredient.Type.WRAP).build(),
-                            Ingredient.builder().id("GRBF").name("Ground Beef").type(Ingredient.Type.PROTEIN).build(),
-                            Ingredient.builder().id("CARN").name("Carnitas").type(Ingredient.Type.PROTEIN).build(),
-                            Ingredient.builder().id("TMTO").name("Diced Tomatoes").type(Ingredient.Type.VEGGIES).build(),
-                            Ingredient.builder().id("LETC").name("Lettuce").type(Ingredient.Type.VEGGIES).build(),
-                            Ingredient.builder().id("CHED").name("Cheddar").type(Ingredient.Type.CHEESE).build(),
-                            Ingredient.builder().id("JACK").name("Monterrey Jack").type(Ingredient.Type.CHEESE).build(),
-                            Ingredient.builder().id("SLSA").name("Salsa").type(Ingredient.Type.SAUCE).build()
-                    )
-            );
-            userRepo.saveAll(List.of(
-                    UserApp.builder().username("user_1")
-                                     .fullname("user_1")
-                                     .state("state_1")
-                                     .city("city_1")
-                                     .phoneNumber("111")
-                                     .zip("zip_1")
-                                     .street("street_1")
-                                     .password(passwordEncoder().encode("user_123"))
-                            .build()
-            ));
-        };
-    }
 }
