@@ -14,6 +14,16 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     show-sql: true
+  jms:
+    template:
+      default-destination: tacocloud.order.queue
+  artemis:
+    host: localhost
+    port: 9001
+    user: younes
+    password: sc123
+    embedded:
+      enabled: false
 
 logging:
   level:

@@ -36,7 +36,8 @@ public class Taco {
 
     private LocalDate createdAt;
 
-    @ManyToMany(targetEntity = Ingredient.class)
+    @ManyToMany(targetEntity = Ingredient.class
+    )
     @Size(min=1, message="You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 

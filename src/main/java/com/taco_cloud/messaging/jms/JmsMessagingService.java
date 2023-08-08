@@ -18,11 +18,11 @@ public class JmsMessagingService implements JmsMessaging{
 
     @Override
     public void SendOrder(TacoOrder tacoOrder) {
-        jmsTemplate.convertAndSend("order_queue", tacoOrder, this::addOrderSource);
+        jmsTemplate.convertAndSend(tacoOrder, this::addOrderSource);
     }
 
     private Message addOrderSource(Message message) throws JMSException {
-        message.setStringProperty("X_ORDER_SOURCE","MOBILE");
+        message.setStringProperty("X_ORDER_SOURCE","WEB");
         return message;
     }
 }

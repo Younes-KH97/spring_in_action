@@ -2,6 +2,7 @@ package com.taco_cloud.api;
 
 import com.taco_cloud.data.OrderRepository;
 import com.taco_cloud.domain.TacoOrder;
+import com.taco_cloud.messaging.jms.JmsMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -14,16 +15,18 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("/**")
 public class TacoOrderController {
     private OrderRepository orderRepository;
+    private JmsMessagingService jmsMessagingService;
 
     @Autowired
-    public TacoOrderController(OrderRepository orderRepository){
+    public TacoOrderController(OrderRepository orderRepository, JmsMessagingService jmsMessagingService){
         this.orderRepository = orderRepository;
+        this.jmsMessagingService = jmsMessagingService;
     }
 
     @GetMapping
     public Iterable<TacoOrder> getAllOrders(){
         PageRequest pageRequest = PageRequest.of(
-                0, 12, Sort.by("createdAt").descending()
+                0, 12, Sort.by("placedAt").descending()
         );
         return orderRepository.findAll(pageRequest).getContent();
     }
@@ -31,6 +34,7 @@ public class TacoOrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TacoOrder addNewTacoOrder(@RequestBody TacoOrder tacoOrder){
+        jmsMessagingService.SendOrder(tacoOrder);
         return orderRepository.save(tacoOrder);
     }
 
@@ -74,6 +78,7 @@ public class TacoOrderController {
         }
         return orderRepository.save(order);
     }
+
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long order_id){

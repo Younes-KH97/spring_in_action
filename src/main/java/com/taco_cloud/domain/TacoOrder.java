@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,8 @@ public class TacoOrder implements Serializable {
     )
     private Long id;
 
-    private LocalDateTime placedAt;
+    private LocalDateTime placedAt = LocalDateTime.now();
+
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
 
@@ -53,26 +55,21 @@ public class TacoOrder implements Serializable {
     @NotBlank(message="Zip code is required")
     private String deliveryZip;
 
-    @CreditCardNumber(message="Not a valid credit card number")
+//    @CreditCardNumber(message="Not a valid credit card number")
     private String ccNumber;
 
     @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$",
             message="Must be formatted MM/YY")
     private String ccExpiration;
 
-    @Digits(integer=3, fraction=0, message="Invalid CVV")
+//    @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
-    @ManyToMany(targetEntity = Taco.class)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_app_id")
     private UserApp userApp;
 
-
-    @PrePersist
-    void placedAt(){
-        this.placedAt = LocalDateTime.now();
-    }
 }
